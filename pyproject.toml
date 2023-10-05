@@ -1,0 +1,130 @@
+[tool.poetry]
+name = "python-template"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.scripts]
+main = "banking.main:start"
+
+[tool.black]
+line-length = 79
+target-version = ["py39"]
+include = '\.pyi?$'
+preview = true
+exclude = '''/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.pip-cache
+  | \.poetry
+  | \.venv
+  | \.venvportal
+  | \.vscode
+  | _build
+  | buck-out
+  | build
+  | vendor
+  | portalruntime/vendor
+  | dist )/'''
+
+[tool.coverage.run]
+branch = true
+omit = []
+
+[tool.coverage.report]
+exclude_lines = [
+  # Have to re-enable the standard pragma
+  "pragma: no cover",
+  # Don't complain about missing debug-only code:
+  "def __repr__",
+  "if self.debug",
+  # Don't complain about some magic methods:
+  "def __str__",
+  # Don't complain if tests don't hit defensive assertion code:
+  "raise AssertionError",
+  "raise NotImplementedError",
+  # Don't complain if non-runnable code isn't run:
+  "if 0:",
+  "if __name__ == .__main__.:",
+  # Don't complain about empty realizations
+  "pass",
+  # Don't complain about abstract methods
+  "@abc.abstractmethod" ]
+ignore_errors = true
+precision = 2
+
+[tool.isort]
+line_length=79
+py_version=39
+combine_as_imports = true
+profile = "black"
+sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
+skip = ".eggs,.pip-cache,.poetry,venv,.venv,.venvportal,dist,vendor,portalruntime/vendor"
+
+[tool.pytest.ini_options]
+addopts = [
+    '--capture=sys',
+    '--cov-report=html',
+    '--cov-report=term',
+    '--cov-report=term-missing',
+    '--cov-report=xml',
+    '--cov-fail-under=100',
+    '--cov=banking',
+    '--durations=10',
+    '--junitxml=tests/junit.xml',
+    '--strict-markers',
+    '-vv' ]
+junit_family = 'xunit1'
+testpaths = 'tests'
+markers = [ 'infrastructure: mark a test as infrastructure' ]
+
+[tool.mypy]
+plugins = ['pfun.mypy_plugin']
+python_version = '3.9'
+files = 'banking,tests'
+exclude = ['^.venv/']
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_untyped_defs = true
+follow_imports = 'skip'
+ignore_missing_imports = true
+no_implicit_reexport = true
+strict_optional = true
+warn_redundant_casts = true
+
+
+[tool.coverage.html]
+directory = 'tests/htmlcov'
+
+[tool.coverage.xml]
+output = 'tests/coverage.xml'
+
+[tool.pyright]
+exclude = ['.venv/']
+
+[tool.poetry.dependencies]
+python = ">=3.9.13,<3.11"
+numpy = "^1.22.2"
+replit = "^3.2.4"
+Flask = "^2.2.0"
+urllib3 = "^1.26.12"
+pfun = "^0.13.1"
+eventsourcing = "^9.2.18"
+Flask-JWT = "^0.3.2"
+Flask-RESTful = "^0.3.9"
+ptw = "^1.0.1"
+bcrypt = "^4.0.1"
+
+[tool.poetry.dev-dependencies]
+debugpy = "^1.6.2"
+replit-python-lsp-server = {extras = ["yapf", "rope", "pyflakes"], version = "^1.5.9"}
+mypy = "^1.2.0"
+black = "^23.3.0"
+pytest = "^7.2.2"
+pytest-cov = "^4.0.0"
+pytest-watch = "^4.2.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
